@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<mapper namespace="com.yh.dao.ScsDao">
+<mapper namespace="com.yh.dao.UserDao">
 
-   <select id="findUserById" resultType="com.yh.entity.Scs" >
-      select c1,c2,id,num from custserv where id = #{id}
+   <select id="findUserById" resultType="com.yh.entity.User" >
+      select c1,c2,id,num from test1 where id = #{id}
    </select>
 
 </mapper>

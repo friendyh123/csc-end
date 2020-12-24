@@ -1,4 +1,4 @@
-package com.gfzq.scs_end;
+package com.gfzq.csc_end;
 
 import java.util.List;
 

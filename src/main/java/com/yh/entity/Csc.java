@@ -1,6 +1,6 @@
 package com.yh.entity;
 
-public class Scs {
+public class Csc {
     private String keyyyy;
     private String questi;
     private String answer;
