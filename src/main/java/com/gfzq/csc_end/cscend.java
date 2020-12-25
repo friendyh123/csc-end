@@ -1,28 +1,22 @@
 package com.gfzq.csc_end;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.ansj.domain.Result;
+
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.yh.dao.CscDao;
-import com.yh.dao.UserDao;
-import com.yh.entity.Csc;
-import com.yh.entity.User;
 
 public class cscend {
 	
 	public static void exec(String str,SqlSessionFactory factory) {
-   
     participle p = new participle(str);       
     List<Term> terms = p.partWord(); //分词
 
@@ -90,7 +84,7 @@ public static void main(String[] args) {
     executor.execute(myTask2);
     
     
-   // executor.shutdown();
+    //executor.shutdown();//关闭线程池
    // exec("开放式基金账户开立");
 }
 
