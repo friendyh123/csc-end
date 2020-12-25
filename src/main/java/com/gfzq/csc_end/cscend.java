@@ -1,5 +1,6 @@
 package com.gfzq.csc_end;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.ansj.domain.Result;
@@ -17,9 +18,9 @@ import com.yh.entity.User;
 
 public class cscend {
 	
-	public static void exec() {
+	public static void exec(String str) {
    
-    participle p = new participle("开放式基金账户开立");       
+    participle p = new participle(str);       
     List<Term> terms = p.partWord(); //分词
 
 //    for(int i=0; i<terms.size(); i++) {
@@ -29,20 +30,23 @@ public class cscend {
     
     SqlSession sqlSession = getSessionFactory().openSession();
     CscDao cscMapper = sqlSession.getMapper(CscDao.class);    
-    try {
-    	List<String> key = cscMapper.queryAllKey();
-    	for(int i = 0;i<key.size();i++) {
-    		for(int j =0;j<terms.size(); j++) {
-    			if(key.get(i).trim().contains(terms.get(j).getName().trim())) {
-    				System.out.println(key.get(i));
-    			}
-    		}
-    	}
-    	
-        //System.out.println(key);
-     } finally {
-        sqlSession.close();
-     }
+    ArrayList<String> matchKey = new ArrayList<String>();
+
+	List<String> key = cscMapper.getAllKey();//匹配关键字
+	for(int i = 0;i<key.size();i++) {
+		for(int j =0;j<terms.size(); j++) {
+			if(key.get(i).trim().contains(terms.get(j).getName().trim())) {
+				matchKey.add(key.get(i));
+			}
+		}
+	}
+
+	List<String> question = cscMapper.getQuesFromKey(matchKey);
+	String answer = cscMapper.getAnswFromQues(question.get(0));//先假设取第一个问题
+	System.out.println(answer);
+	sqlSession.commit();
+    sqlSession.close();//关闭连接
+   
     
 }
 	
@@ -59,6 +63,6 @@ private static SqlSessionFactory getSessionFactory() {
 }
 
 public static void main(String[] args) {
-    exec();
+    exec("开放式基金账户开立");
 }
 }

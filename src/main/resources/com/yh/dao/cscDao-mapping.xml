@@ -3,9 +3,24 @@
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="com.yh.dao.CscDao">
-
-	<select id="queryAllKey" resultType="String">
+<cache/>
+	<select id="getAllKey" resultType="String">
         select distinct keyyyy from custserv
     </select>
+    
+    <select id="getQuesFromKey" resultType="String">
+        select questi from custserv where keyyyy in
+        <foreach collection="list" item="keyyyy" index="index"
+            open="(" close=")" separator=",">
+            #{keyyyy}
+        </foreach>
+    </select>
+    
+    <select id="getAnswFromQues" resultType="String">
+        select answer from custserv where questi = #{questi}
+    </select>
+    
+    
+    
 
 </mapper>
