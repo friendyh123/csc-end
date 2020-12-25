@@ -20,6 +20,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         select answer from custserv where questi = #{questi}
     </select>
     
+    <update id="updaCountFromQues">    
+	    update custserv set countt=countt+1 where questi = #{id}	    
+	</update>
+    
     
     
 

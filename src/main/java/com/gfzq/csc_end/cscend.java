@@ -40,6 +40,7 @@ public class cscend {
 
 	List<String> question = cscMapper.getQuesFromKey(matchKey);//通过关键字获取到问题
 	String answer = cscMapper.getAnswFromQues(question.get(0));//先假设取第一个问题，得到答案
+	cscMapper.updaCountFromQues(question.get(0));
 	System.out.println(answer);
 	sqlSession.commit();
     sqlSession.close();//关闭连接
@@ -51,8 +52,7 @@ private static SqlSessionFactory getSessionFactory() {
     SqlSessionFactory sessionFactory = null;
     String resource = "configuration.xml";
     try {
-        sessionFactory = new SqlSessionFactoryBuilder().build(Resources
-                .getResourceAsReader(resource));
+        sessionFactory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsReader(resource));
     } catch (IOException e) {
         e.printStackTrace();
     }
@@ -67,21 +67,21 @@ public static void main(String[] args) {
 //	exec("开放式基金账户开立",factory);
 //	exec("开放式基金账户开立",factory);
     
-//    for(int i=0;i<2;i++){
-//        MyTask myTask = new MyTask("开放式基金账户开立",factory);
-//        executor.execute(myTask);
-//    }
+    for(int i=0;i<2;i++){
+        MyTask myTask = new MyTask("开放式基金账户开立",factory);
+        executor.execute(myTask);
+    }
     //Thread.sleep(millis);
-    MyTask myTask1 = new MyTask("开放式基金账户开立",factory);
-    executor.execute(myTask1);
-    try {
-		Thread.sleep(5000);
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-    MyTask myTask2 = new MyTask("开放式基金账户开立",factory);
-    executor.execute(myTask2);
+//    MyTask myTask1 = new MyTask("开放式基金账户开立",factory);
+//    executor.execute(myTask1);
+//    try {
+//		Thread.sleep(5000);
+//	} catch (InterruptedException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//    MyTask myTask2 = new MyTask("开放式基金账户开立",factory);
+//    executor.execute(myTask2);
     
     
     //executor.shutdown();//关闭线程池

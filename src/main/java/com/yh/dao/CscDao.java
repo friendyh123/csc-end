@@ -10,6 +10,8 @@ public interface CscDao {
     public List<String> getQuesFromKey(List<String> keyyyy);
     
     public String getAnswFromQues(String questi);
+    
+    public void updaCountFromQues(String questi);
 
 
 
