@@ -11,8 +11,10 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.java_websocket.WebSocketImpl;
 
 import com.yh.dao.CscDao;
+import com.yh.websocket.WsServer;
 
 public class cscend {
 	
@@ -60,6 +62,10 @@ private static SqlSessionFactory getSessionFactory() {
 }
 
 public static void main(String[] args) {
+	WebSocketImpl.DEBUG = true;
+    int port = 8887; // 端口
+    WsServer s = new WsServer(port);
+    s.start();
 	SqlSessionFactory factory = getSessionFactory();
 	ExecutorService executor = Executors.newFixedThreadPool(5);
 	
@@ -67,10 +73,10 @@ public static void main(String[] args) {
 //	exec("开放式基金账户开立",factory);
 //	exec("开放式基金账户开立",factory);
     
-    for(int i=0;i<2;i++){
-        MyTask myTask = new MyTask("开放式基金账户开立",factory);
-        executor.execute(myTask);
-    }
+//    for(int i=0;i<100;i++){
+//        MyTask myTask = new MyTask("开放式基金账户开立",factory);
+//        executor.execute(myTask);
+//    }
     //Thread.sleep(millis);
 //    MyTask myTask1 = new MyTask("开放式基金账户开立",factory);
 //    executor.execute(myTask1);

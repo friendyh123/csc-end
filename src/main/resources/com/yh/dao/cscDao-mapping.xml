@@ -13,7 +13,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <foreach collection="list" item="keyyyy" index="index"
             open="(" close=")" separator=",">
             #{keyyyy}
-        </foreach>
+        </foreach> order by countt desc
     </select>
     
     <select id="getAnswFromQues" resultType="String">
