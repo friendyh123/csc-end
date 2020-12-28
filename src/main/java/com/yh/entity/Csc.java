@@ -1,5 +1,8 @@
 package com.yh.entity;
-
+/** 
+ * 和表custserv对应的类
+ * 
+ * */
 public class Csc {
     private String keyyyy;
     private String questi;
