@@ -14,25 +14,26 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.java_websocket.WebSocketImpl;
 
 import com.yh.dao.CscDao;
-//import com.yh.websocket.WsServer;
+import com.yh.websocket.WsServer;
 /** 
  * 
  * 主程序*/
 public class cscend {
 	
 	public static void main(String[] args) {
-		WebSocketImpl.DEBUG = true;
-	    int port = 8887; // 端口
-	    WsServer s = new WsServer(port);
-	    s.start();
 		SqlSessionFactory factory = sessionFactory.getSessionFactory();
 		ExecutorService executor = Executors.newFixedThreadPool(4);	//线程数量为4
+		WebSocketImpl.DEBUG = true;
+	    int port = 8887; // 端口
+	    WsServer s = new WsServer(port,factory,executor);
+	    s.start();
+		
 
 	    
-	    for(int i=0;i<100;i++){
-	    	newTask task = new newTask("开放式基金账户开立",factory);
-	        executor.execute(task);
-	    }    
+//	    for(int i=0;i<2;i++){
+//	    	newTask task = new newTask("开放式基金账户开立",factory);
+//	        executor.execute(task);
+//	    }    
 	    
 	    //executor.shutdown();//关闭线程池
 
