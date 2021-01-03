@@ -21,10 +21,10 @@ import com.yh.dao.CscDao;
 public class cscend {
 	
 	public static void main(String[] args) {
-//		WebSocketImpl.DEBUG = true;
-//	    int port = 8887; // 端口
-//	    WsServer s = new WsServer(port);
-//	    s.start();
+		WebSocketImpl.DEBUG = true;
+	    int port = 8887; // 端口
+	    WsServer s = new WsServer(port);
+	    s.start();
 		SqlSessionFactory factory = sessionFactory.getSessionFactory();
 		ExecutorService executor = Executors.newFixedThreadPool(4);	//线程数量为4
 
