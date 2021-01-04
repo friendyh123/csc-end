@@ -22,7 +22,7 @@
         <property name="url" value="jdbc:mysql://localhost:3306/csc"/>
         <property name="username" value="root"/>
         <property name="password" value="123456"/>
-        
+
 
          <!-- 上面指定了数据库配置文件， 配置文件里面也是对应的这四个属性 -->
 <!--          <property name="driver" value="${driver}"/>

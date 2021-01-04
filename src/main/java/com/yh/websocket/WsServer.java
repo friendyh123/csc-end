@@ -46,7 +46,7 @@ public class WsServer extends WebSocketServer{
         System.out.println(conn.getRemoteSocketAddress().toString());
         conn.getRemoteSocketAddress().toString();
         conn.getLocalSocketAddress();
-        if(null != message){//先分词
+        if(null != message&&(!message.trim().equals(""))){//空字符串不处理
             //String userName=message.replaceFirst("online", message);//用户名
             userJoin(conn,conn.getRemoteSocketAddress().toString());//用户加入
             SqlSession sqlSession = factory.openSession();
@@ -65,7 +65,8 @@ public class WsServer extends WebSocketServer{
         	      	List<String> key = cscMapper.getAllKey();//匹配关键字
         	      	for(int i = 0;i<key.size();i++) {
         	      		for(int j =0;j<terms.size(); j++) {
-        	      			if(key.get(i).trim().contains(terms.get(j).getName().trim())) {
+        	      			String term = terms.get(j).getName().trim();
+        	      			if((!term.equals(""))&&key.get(i).trim().contains(term)) {
         	      				matchKey.add(key.get(i));
         	      			}
         	      		}
