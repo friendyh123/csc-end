@@ -8,6 +8,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         select distinct keyyyy from custserv
     </select>
     
+    <select id="getAllQuesti" resultType="String">
+        select questi from custserv
+    </select>
+    
     <select id="getQuesFromKey" resultType="String">
         select questi from custserv where keyyyy in
         <foreach collection="list" item="keyyyy" index="index"

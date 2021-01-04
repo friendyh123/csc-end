@@ -46,52 +46,41 @@ public class WsServer extends WebSocketServer{
         System.out.println(conn.getRemoteSocketAddress().toString());
         conn.getRemoteSocketAddress().toString();
         conn.getLocalSocketAddress();
-        if(null != message &&message.startsWith("1")){//先分词
+        if(null != message){//先分词
             //String userName=message.replaceFirst("online", message);//用户名
             userJoin(conn,conn.getRemoteSocketAddress().toString());//用户加入
-            participle p = new participle(message.trim());       
-            List<Term> terms = p.partWord(); //分词
             SqlSession sqlSession = factory.openSession();
-	          try {    	
-	          CscDao cscMapper = sqlSession.getMapper(CscDao.class);    
-	          ArrayList<String> matchKey = new ArrayList<String>();
-	      	List<String> key = cscMapper.getAllKey();//匹配关键字
-	      	for(int i = 0;i<key.size();i++) {
-	      		for(int j =0;j<terms.size(); j++) {
-	      			if(key.get(i).trim().contains(terms.get(j).getName().trim())) {
-	      				matchKey.add(key.get(i));
-	      			}
-	      		}
-	      	}
-	      	List<String> question = cscMapper.getQuesFromKey(matchKey);//通过关键字获取到问题
-	      	conn.send(question.toString());
-//	      	String answer = cscMapper.getAnswFromQues(question.get(0));//先假设取第一个问题，得到答案
-//	      	cscMapper.updaCountFromQues(question.get(0));
-//	      	System.out.println(answer);
-//	      	sqlSession.commit();
-	      }catch (Exception e) {
+            try {            	
+                CscDao cscMapper = sqlSession.getMapper(CscDao.class);
+                List<String> allQues = cscMapper.getAllQuesti();
+                if(allQues.contains(message.trim())) {//如果直接是问题，不需要分词，直接返回答案
+                	String answer = cscMapper.getAnswFromQues(message.trim());//先假设取第一个问题，得到答案
+    	  	      	cscMapper.updaCountFromQues(message.trim());
+    	  	        conn.send(answer);
+    	  	        sqlSession.commit();
+                }else {//如果不是问题，先分词，再返回问题
+                	participle p = new participle(message.trim());       
+                    List<Term> terms = p.partWord(); //分词
+                	ArrayList<String> matchKey = new ArrayList<String>();
+        	      	List<String> key = cscMapper.getAllKey();//匹配关键字
+        	      	for(int i = 0;i<key.size();i++) {
+        	      		for(int j =0;j<terms.size(); j++) {
+        	      			if(key.get(i).trim().contains(terms.get(j).getName().trim())) {
+        	      				matchKey.add(key.get(i));
+        	      			}
+        	      		}
+        	      	}
+        	      	List<String> question = cscMapper.getQuesFromKey(matchKey);//通过关键字获取到问题
+        	      	conn.send(question.toString());
+        	      	sqlSession.commit();
+                }
+            }catch (Exception e) {
 	          sqlSession.rollback();//出现问题回退
 	      }finally {    	
 	          sqlSession.close();//关闭连接
 	      }
             
-        }else if(null != message &&message.startsWith("2")){
-        	SqlSession sqlSession = factory.openSession();
-        	try {    	
-  	          CscDao cscMapper = sqlSession.getMapper(CscDao.class);
-  	        message = message.trim().replaceFirst("\\d", "");
-	  	      	String answer = cscMapper.getAnswFromQues(message.trim());//先假设取第一个问题，得到答案
-	  	      	cscMapper.updaCountFromQues(message.trim());
-	  	        conn.send(answer);
-	  	      	System.out.println(answer);
-	  	      	sqlSession.commit();
-  	      }catch (Exception e) {
-  	          sqlSession.rollback();//出现问题回退
-  	      }finally {    	
-  	          sqlSession.close();//关闭连接
-  	      }
-        }
-        else if(null != message && message.startsWith("offline")){
+        }else if(null != message && message.startsWith("offline")){
             userLeave(conn);
         }
 
