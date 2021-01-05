@@ -2,7 +2,6 @@ package com.yh.websocket;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 import org.ansj.domain.Term;
 import org.apache.ibatis.session.SqlSession;
@@ -12,6 +11,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import com.gfzq.csc_end.participle;
+
 import com.yh.dao.CscDao;
 public class WsServer extends WebSocketServer{
 	SqlSessionFactory factory;	
@@ -24,7 +24,7 @@ public class WsServer extends WebSocketServer{
     public WsServer(InetSocketAddress address) {
         super(address);
     }
-
+ 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         // ws连接的时候触发的代码，onOpen中我们不做任何操作
@@ -36,7 +36,8 @@ public class WsServer extends WebSocketServer{
         //断开连接时候触发代码
         //userLeave(conn);
         System.out.println(reason);
-    }
+    }    
+ 
 
     @Override
     public void onMessage(WebSocket conn, String message) {
@@ -45,9 +46,9 @@ public class WsServer extends WebSocketServer{
             SqlSession sqlSession = factory.openSession();
             try {            	
                 CscDao cscMapper = sqlSession.getMapper(CscDao.class);
-                List<String> allQues = cscMapper.getAllQuesti();
+                List<String> allQues = cscMapper.getAllQuesti();//二级缓存有效
                 if(allQues.contains(message.trim())) {//如果直接是问题，不需要分词，直接返回答案
-                	String answer = cscMapper.getAnswFromQues(message.trim());//先假设取第一个问题，得到答案
+                	String answer = cscMapper.getAnswFromQues(message.trim());//取问题，得到答案
     	  	      	cscMapper.updaCountFromQues(message.trim());
     	  	        conn.send(answer);
     	  	        sqlSession.commit();
@@ -99,5 +100,7 @@ public class WsServer extends WebSocketServer{
 //    private void userJoin(WebSocket conn,String userName){
 //        WsPool.addUser(userName, conn);
 //    }
+
+
 
 }

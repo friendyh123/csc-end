@@ -19,7 +19,6 @@ public class participle {
 
 	public List<Term> partWord() {
 
-		// str = "新开立的证券帐户何时可以买入股票" ;
 		Result result = ToAnalysis.parse(str); // 分词结果的一个封装，主要是一个List<Term>的terms
 		// System.out.println(result.getTerms());
 
