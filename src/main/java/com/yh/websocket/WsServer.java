@@ -9,12 +9,17 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import com.gfzq.csc_end.participle;
 
 import com.yh.dao.CscDao;
 public class WsServer extends WebSocketServer{
 	SqlSessionFactory factory;	
+	private static Logger logger = LoggerFactory.getLogger(WsServer.class);// slf4j日志记录器
+	//private static Logger logger = Logger.getLogger(WsServer.class);
 	public WsServer(int port,SqlSessionFactory factory) {
         super(new InetSocketAddress(port));
         this.factory = factory;
@@ -35,12 +40,14 @@ public class WsServer extends WebSocketServer{
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         //断开连接时候触发代码
         //userLeave(conn);
-        System.out.println(reason);
+    	logger.info(reason);
     }    
  
 
     @Override
     public void onMessage(WebSocket conn, String message) {
+    	//System.out.println("address:"+conn.getRemoteSocketAddress().toString());
+    	//logger.info(conn.getRemoteSocketAddress().toString());
         if(null != message&&(!message.trim().equals(""))){//空字符串不处理
             //userJoin(conn,conn.getRemoteSocketAddress().toString());//用户加入
             SqlSession sqlSession = factory.openSession();
@@ -48,9 +55,11 @@ public class WsServer extends WebSocketServer{
                 CscDao cscMapper = sqlSession.getMapper(CscDao.class);
                 List<String> allQues = cscMapper.getAllQuesti();//二级缓存有效
                 if(allQues.contains(message.trim())) {//如果直接是问题，不需要分词，直接返回答案
+                	//logger.info(message.trim());
                 	String answer = cscMapper.getAnswFromQues(message.trim());//取问题，得到答案
     	  	      	cscMapper.updaCountFromQues(message.trim());
     	  	        conn.send(answer);
+    	  	      logger.info(answer);
     	  	        sqlSession.commit();
                 }else {//如果不是问题，先分词，再返回问题
                 	participle p = new participle(message.trim());       
@@ -82,7 +91,7 @@ public class WsServer extends WebSocketServer{
     @Override
     public void onError(WebSocket conn, Exception ex) {
         //错误时候触发的代码
-        System.out.println("on error");
+        //System.out.println("on error");
         ex.printStackTrace();
     }
     /**

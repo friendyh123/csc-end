@@ -24,9 +24,9 @@ public class newTask implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("正在执行task " + str);
+		//System.out.println("正在执行task " + str);
 		exec(str, factory);
-		System.out.println("task " + str + "执行完毕");
+		//System.out.println("task " + str + "执行完毕");
 	}
 
 	// 主要执行逻辑
@@ -36,7 +36,7 @@ public class newTask implements Runnable {
 		SqlSession sqlSession = factory.openSession();
 		try {
 			CscDao cscMapper = sqlSession.getMapper(CscDao.class);
-			ArrayList<String> matchKey = new ArrayList<String>();
+			ArrayList<String> matchKey = new ArrayList<>();
 			List<String> key = cscMapper.getAllKey();// 匹配关键字
 			for (int i = 0; i < key.size(); i++) {
 				for (int j = 0; j < terms.size(); j++) {
