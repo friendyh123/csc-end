@@ -14,12 +14,11 @@ import org.java_websocket.server.WebSocketServer;
 import com.gfzq.csc_end.participle;
 import com.yh.dao.CscDao;
 public class WsServer extends WebSocketServer{
-	SqlSessionFactory factory;
-	ExecutorService executor;
-	public WsServer(int port,SqlSessionFactory factory,ExecutorService executor) {
+	SqlSessionFactory factory;	
+	public WsServer(int port,SqlSessionFactory factory) {
         super(new InetSocketAddress(port));
         this.factory = factory;
-        this.executor = executor;
+        //this.executor = executor;
     }
 
     public WsServer(InetSocketAddress address) {
@@ -35,20 +34,14 @@ public class WsServer extends WebSocketServer{
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         //断开连接时候触发代码
-        userLeave(conn);
+        //userLeave(conn);
         System.out.println(reason);
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        System.out.println(message);
-        //conn.send("收到");
-        System.out.println(conn.getRemoteSocketAddress().toString());
-        conn.getRemoteSocketAddress().toString();
-        conn.getLocalSocketAddress();
         if(null != message&&(!message.trim().equals(""))){//空字符串不处理
-            //String userName=message.replaceFirst("online", message);//用户名
-            userJoin(conn,conn.getRemoteSocketAddress().toString());//用户加入
+            //userJoin(conn,conn.getRemoteSocketAddress().toString());//用户加入
             SqlSession sqlSession = factory.openSession();
             try {            	
                 CscDao cscMapper = sqlSession.getMapper(CscDao.class);
@@ -81,8 +74,6 @@ public class WsServer extends WebSocketServer{
 	          sqlSession.close();//关闭连接
 	      }
             
-        }else if(null != message && message.startsWith("offline")){
-            userLeave(conn);
         }
 
     }
@@ -97,16 +88,16 @@ public class WsServer extends WebSocketServer{
      * 去除掉失效的websocket链接
      * @param conn
      */
-    private void userLeave(WebSocket conn){
-        WsPool.removeUser(conn);
-    }
+//    private void userLeave(WebSocket conn){
+//        WsPool.removeUser(conn);
+//    }
     /**
      * 将websocket加入用户池
      * @param conn
      * @param userName
      */
-    private void userJoin(WebSocket conn,String userName){
-        WsPool.addUser(userName, conn);
-    }
+//    private void userJoin(WebSocket conn,String userName){
+//        WsPool.addUser(userName, conn);
+//    }
 
 }

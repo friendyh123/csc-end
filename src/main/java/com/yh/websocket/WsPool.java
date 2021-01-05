@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.java_websocket.WebSocket;
 public class WsPool {
-	private static final Map<WebSocket, String> wsUserMap = new HashMap<WebSocket, String>();
+	private static final Map<WebSocket, String> wsUserMap = new ConcurrentHashMap<WebSocket, String>();
 
     /**
      * 通过websocket连接获取其对应的用户
