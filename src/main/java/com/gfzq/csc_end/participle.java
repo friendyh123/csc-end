@@ -30,7 +30,7 @@ public class participle {
 //  for(int i=0; i<terms.size(); i++) {
 //      String word = terms.get(i).getName(); //拿到词
 //      System.out.println(word);
-////      String natureStr = terms.get(i).getNatureStr(); //拿到词性
+////      String natureStr = terms.get(i).getNatureStr(); 
 ////      if(expectedNature.contains(natureStr)) {
 ////          System.out.println(word + ":" + natureStr);
 ////      }

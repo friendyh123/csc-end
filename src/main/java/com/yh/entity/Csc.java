@@ -4,10 +4,10 @@ package com.yh.entity;
  * 
  * */
 public class Csc {
-    private String keyyyy;
-    private String questi;
-    private String answer;
-    private long countt;
+    private String keyyyy;//关键字
+    private String questi;//问题
+    private String answer;//答案
+    private long countt;//计数值
 	public String getKeyyyy() {
 		return keyyyy;
 	}

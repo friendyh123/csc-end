@@ -19,11 +19,9 @@ import com.yh.dao.CscDao;
 public class WsServer extends WebSocketServer{
 	SqlSessionFactory factory;	
 	private static Logger logger = LoggerFactory.getLogger(WsServer.class);// slf4j日志记录器
-	//private static Logger logger = Logger.getLogger(WsServer.class);
 	public WsServer(int port,SqlSessionFactory factory) {
         super(new InetSocketAddress(port));
         this.factory = factory;
-        //this.executor = executor;
     }
 
     public WsServer(InetSocketAddress address) {
@@ -46,7 +44,6 @@ public class WsServer extends WebSocketServer{
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-    	//System.out.println("address:"+conn.getRemoteSocketAddress().toString());
     	//logger.info(conn.getRemoteSocketAddress().toString());
         if(null != message&&(!message.trim().equals(""))){//空字符串不处理
             //userJoin(conn,conn.getRemoteSocketAddress().toString());//用户加入
